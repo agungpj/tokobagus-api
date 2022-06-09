@@ -43,6 +43,8 @@ router.get("/user/:id", getUser);
 router.patch("/user/:id", updateUser);
 router.delete("/user/:id", deleteUser);
 
+router.get("/profile", auth, getProfile);
+
 router.get("/products", auth, getProducts);
 router.get("/product/:id", auth, getProduct);
 router.post("/product", auth, uploadFile("image"), addProduct);
@@ -52,13 +54,16 @@ router.delete("/product/:id", auth, deleteProduct);
 router.get("/transactions", auth, getTransactions);
 router.post("/transaction", auth, addTransaction);
 
+router.post("/notification", notification);
+
 router.get("/categories", getCategories);
 router.get("/category/:id", getCategory);
 router.post("/category", addCategory);
-router.patch("/category/:id", auth, updateCategory);
+router.patch("/category/:id", updateCategory);
 router.delete("/category/:id", deleteCategory);
 
-router.post("/login", login);
 router.post("/register", register);
+router.post("/login", login);
+router.get("/check-auth", auth, checkAuth);
 
 module.exports = router;

@@ -94,7 +94,6 @@ exports.addTransaction = async (req, res) => {
         },
       },
       where: {
-        // didapat dari user yg login dihubungkan ke profile
         id: newData.idBuyer,
       },
       attributes: {
@@ -108,7 +107,7 @@ exports.addTransaction = async (req, res) => {
       serverKey: process.env.MIDTRANS_SERVER_KEY,
     });
 
-    //parameter untuk snap Api berupa data data user.
+    //parameter untuk snap Api
     let parameter = {
       transaction_details: {
         order_id: newData.id,
@@ -125,8 +124,12 @@ exports.addTransaction = async (req, res) => {
       },
     };
 
-    // masukkan ke snap api.
+    //create transaksi memuat token
     const payment = await snap.createTransaction(parameter);
+    // {
+    //   "token": "66e4fa55-fdac-4ef9-91b5-733b97d1b862",
+    //   "redirect_url": "https://app.sandbox.midtrans.com/snap/v2/vtweb/66e4fa55-fdac-4ef9-91b5-733b97d1b862"
+    // }
 
     res.send({
       status: "pending",
@@ -178,7 +181,6 @@ exports.notification = async (req, res) => {
     const fraudStatus = statusResponse.fraud_status;
 
     //kondisi di status definiti mitrans untuk mengubah status yg ada di table transaksi
-    // fraudstatus dan transaction status saling berelasi
     if (transactionStatus == "capture") {
       if (fraudStatus == "challenge") {
         // TODO set transaction status on your database to 'challenge'
